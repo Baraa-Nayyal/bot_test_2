@@ -1,7 +1,6 @@
 const TelegramBot = require("node-telegram-bot-api");
 
 require("dotenv").config();
-console.log("tooooooooken", process.env.BOT_TOKEN); // check if loaded
 
 const TOKEN = process.env.BOT_TOKEN;
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
@@ -133,8 +132,6 @@ const userOrders = {};
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-
-  console.log("chaaaaaaaat", chatId);
 
   bot
     .sendMessage(chatId, versionsInfo.start, mainMenu)
