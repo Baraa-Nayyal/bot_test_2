@@ -12,7 +12,7 @@ const bot = new TelegramBot(TOKEN, { polling: true });
 const mainMenu = {
   reply_markup: {
     inline_keyboard: [
-      [{ text: "🟠 نسخة sssss 🟠", callback_data: "front" }],
+      [{ text: "🟠 نسخة sssdss 🟠", callback_data: "front" }],
       [{ text: "🟢 نسخة الباك 🟢", callback_data: "back" }],
       [{ text: "🟣 نسخة التأسيس 🟣", callback_data: "foundation" }],
       [{ text: "⁉️ محتار وعندك استفسار ⁉️", callback_data: "ask" }],
