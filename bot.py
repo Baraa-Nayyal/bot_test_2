@@ -1,4 +1,6 @@
 import logging
+import requests
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -9,11 +11,23 @@ from telegram.ext import (
     ContextTypes,
 )
 
+
+# def load_config():
+#     url = "https://raw.githubusercontent.com/Baraa-Nayyal/bot_test_2/main/config.json"
+#     response = requests.get(url)
+#     response.raise_for_status()  # Raises an HTTPError for bad responses
+#     return response.json()
+
+
+# config = load_config()
+
+
 TOKEN = "8366088074:AAG-rZRAQJzLkw6R6nTs8tnFTMNezPAhpL0"
 ADMIN_CHAT_ID = "895332862"
-ORDERS_CHAT_ID = "-4873158541"
-ASK_CHAT_ID = "-4810733126"
-
+ORDERS_CHAT_ID = "-1002993388534"
+ASK_CHAT_ID = "-1003196454615"
+# const ORDERS_CHAT_ID = "-1002993388534";
+# const ASK_CHAT_ID = "-1003196454615";
 userAsks = {}
 userOrders = {}
 
@@ -38,10 +52,10 @@ versionsInfo = {
 
 ⛳️ كل فصل مجهز بطريقة عملية:
 
-أمثلة تطبيقية مباشرة.
-أسئلة قصيرة بعد كل فصل لتتأكد من فهمك.
-مساحة لتدوين ملاحظاتك أثناء التعلم.
-وطبعاً To-Do لكل الدروس لترتيب تقدمك بسهولة.
+🔸 أمثلة تطبيقية مباشرة.
+🔸 أسئلة قصيرة بعد كل فصل لتتأكد من فهمك.
+🔸 مساحة لتدوين ملاحظاتك أثناء التعلم.
+🔸 وطبعاً To-Do لكل الدروس لترتيب تقدمك بسهولة.
 """,
     "back": """باك إيند شغوف ✨
 
@@ -53,9 +67,9 @@ versionsInfo = {
 
 ⛳️ كل فصل مجهز بطريقة عملية:
 
-أسئلة قصيرة بعد كل فصل لتتأكد من فهمك.
-مساحة لتدوين ملاحظاتك أثناء التعلم.
-وطبعاً To-Do لكل الدروس لترتيب تقدمك بسهولة.
+🔸 أسئلة قصيرة بعد كل فصل لتتأكد من فهمك.
+🔸 مساحة لتدوين ملاحظاتك أثناء التعلم.
+🔸 وطبعاً To-Do لكل الدروس لترتيب تقدمك بسهولة.
 """,
     "foundation": """الأساسيات مع شغوف ✨
 
@@ -73,9 +87,9 @@ versionsInfo = {
 
 ⛳️ كل فصل مجهز بطريقة عملية:
 
-أسئلة قصيرة بعد كل فصل لتتأكد من فهمك.
-مساحة لتدوين ملاحظاتك أثناء التعلم.
-وطبعاً To-Do لكل الدروس لترتيب تقدمك بسهولة.
+🔸 أسئلة قصيرة بعد كل فصل لتتأكد من فهمك.
+🔸 مساحة لتدوين ملاحظاتك أثناء التعلم.
+🔸 وطبعاً To-Do لكل الدروس لترتيب تقدمك بسهولة.
 """,
     "start": """مرحباً بك في شغوف ✨
 شغوف هو صديق رحلتك البرمجية، مابهم المستوى سواء من الصفر او مبلش من قبل، كلشي رح يكون بخطوات واضحة وبسيطة. هدفه يسهّل عليك الطريق ويخلّي التعلم ممتع بعيد عن العشوائية.
@@ -101,36 +115,52 @@ versionsInfo = {
 https://t.me/baraa_developer
 
 أو تلغرام التواصل في حال مالقيت الخدمة المناسبة بالبوت:
-@shaghoof1
+@shagh1
 
 
 🚀 شغوف بانتظارك ليصنع معك تجربة جديدة، اختر النسخة الخاصة فيك وخلينا نبدأ..
 """,
     "ask": """محتار بأي مجال تبلش وبدك استشارة لحتى تتطمن إنك قررت صح ؟
-فيك تترك سؤالك برسالة ✉️
-تأكد إنك مأظهر معرفك التلغرام ورح اتواصل معك وأجاوب خلال ساعات قليلة إن شاء الله..
+فيك تترك سؤالك برسالة على المعرف @shagh1 ✉️
+ورح اتواصل معك وأجاوب بأسرع وقت إن شاء الله..
 
-فضلاً خلي سؤالك مختصر وواضح برسالة واحدة حصراً حتى أقدر ساعدك بأفضل شكل عزيزي الشغوف ✨
+فضلاً خلي سؤالك مختصر وواضح برسالة واحدة حتى أقدر ساعدك بأفضل شكل عزيزي الشغوف ✨
 
-اكتبلي 👇
 """,
     "orderInfo": """شكراً إنك وصلت لهالمرحلة 🎗
 
-🔸فيك  تستلم النسخة بشكل مجاني بمنطقة الأكرمية أو حلب الجديدة شمالي
+🟥 إذا انت بحلب 👇
 
-🔹 غير هيك في خيار دليفري لبيتك بأسرع وقت بتكلفة مابتتجاوز 15 ألف على حسب منطقة بيتك
+🔸 التوصيل مجاني بمنطقة الأكرمية
+
+🔹 غير هيك في خيار دليفري لبيتك بأسرع وقت بتكلفة مابتتجاوز 8-10 آلاف على حسب منطقة بيتك
+
+
+🟥 إذا انت بغير محافظة 👇
+
+🔸 في خيار الشحن بالقدموس ورح اتواصل معك للدفع عن طريق شام كاش، وهو وسيلة كتير سهلة بالتعامل ولو إنك مامتعامل معها من قبل 👀
 
 
 اكتبلي معلوماتك بهالشكل صديقي لنوصل لآخر مرحلة بالطلب:
 
-- الاسم
+- الاسم الثلااااااااااثي
+- المحافظة
 - الرقم
-- المنطقة يلي بتحب تستلم منها: أكرمية، حلب الجديدة، دليفري
+- المنطقة يلي بتحب تستلم منها مع تفاصيل العنوان للدليفري
+او أقرب منطقة الك للقدموس إذا بغير محافظة
 
 مثلاً:
-براء نيال
-0988888888
+براء صلاح نيال
+حلب
+09393939393
 أكرمية
+
+أو
+
+براء صلاح نيال
+دمشق
+09393939393
+قدموس اشرفية صحنايا
 
 اكتبلي 👇
 """,
@@ -161,7 +191,6 @@ async def handle_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
             ]
         )
     elif data == "ask":
-        userAsks[chat_id] = True
         await query.edit_message_text(
             versionsInfo["ask"],
             reply_markup=InlineKeyboardMarkup(
@@ -190,14 +219,18 @@ async def handle_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             ORDERS_CHAT_ID,
             f"📢 New Order Confirmed!\n\nنسخة: {order['version']}\n"
-            f"الاسم: {order['name']}\nالرقم: {order['number']}\n"
-            f"الموقع: {order['location']}\nالمستخدم: {username}",
+            f"المحافظة: {order['governorate']}\n"
+            f"الاسم: {order['name']}\n"
+            f"الرقم: {order['number']}\n"
+            f"الموقع: {order['location']}\n"
+            f"السعر بعد الحسم: {order['price']} ألف\n"
+            f"المستخدم: {username}",
         )
         del userOrders[chat_id]
         return
     elif data == "cancel_order":
         await query.edit_message_text(
-            "❌ تم إلغاء الطلب. إذا حاب تشاركنا السبب تواصل مع @shaghoof1"
+            "❌ تم إلغاء الطلب. إذا حاب تشاركنا السبب تواصل مع @shagh1"
         )
         username = (
             f"@{query.from_user.username}"
@@ -232,35 +265,47 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if chat_id in userOrders and userOrders[chat_id]["step"] == "awaiting_info":
         lines = update.message.text.split("\n")
-        if len(lines) < 3:
+        if len(lines) < 4:
             await update.message.reply_text(
-                "الرجاء إدخال البيانات: الاسم\nالرقم\nالموقع"
+                "الرجاء إدخال البيانات بهالشكل وبرسالة واحدة:\n الاسم\nالمحافظة\nالرقم\nالموقع"
             )
             return
 
-        name, number, location = lines[0].strip(), lines[1].strip(), lines[2].strip()
+        name, governorate, number, location = (
+            lines[0].strip(),
+            lines[1].strip(),
+            lines[2].strip(),
+            lines[3].strip(),
+        )
         version = userOrders[chat_id]["version"]
 
-        front_price = 75
+        discount_front_price = 80
         front_main_price = 15
-        others_main_price = 12
-        others_price = 60
+        others_main_price = 10
+        discount_others_price = 65
+
+        user_price = (
+            discount_front_price if version == "front" else discount_others_price
+        )
 
         userOrders[chat_id] = {
             "version": version,
             "name": name,
+            "governorate": governorate,
             "number": number,
             "location": location,
+            "price": user_price,
         }
 
     await update.message.reply_text(
         f"""نسخة: {version}
+المحافظة: {governorate}
 الاسم: {name}
 الرقم: {number}
 الموقع: {location}
 
 السعر الأساسي {"{0}$".format(front_main_price) if version == "front" else "{0}$".format(others_main_price)}
-وبحسم للنسخ الأولى رح يصير السعر: {"{0} ألف".format(front_price) if version == "front" else "{0} ألف".format(others_price)}
+وبحسم للنسخ الأولى رح يصير السعر: {"{0} ألف".format(discount_front_price) if version == "front" else "{0} ألف".format(others_price)}
 
 ويتضمن ميدلية بورتكليه ذِكرى من شغوف 💫.
 

@@ -2,17 +2,17 @@ const TelegramBot = require("node-telegram-bot-api");
 
 require("dotenv").config();
 
-const TOKEN = process.env.BOT_TOKEN;
-const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
-const ORDERS_CHAT_ID = process.env.ORDERS_CHAT_ID;
-const ASK_CHAT_ID = process.env.ASK_CHAT_ID;
+const TOKEN = "8366088074:AAG-rZRAQJzLkw6R6nTs8tnFTMNezPAhpL0";
+const ADMIN_CHAT_ID = "895332862";
+const ORDERS_CHAT_ID = "-1002993388534";
+const ASK_CHAT_ID = "-1003196454615";
 
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 const mainMenu = {
   reply_markup: {
     inline_keyboard: [
-      [{ text: "🟠 نسخة sssdss 🟠", callback_data: "front" }],
+      [{ text: "🟠 نسخة فرونت 🟠", callback_data: "front" }],
       [{ text: "🟢 نسخة الباك 🟢", callback_data: "back" }],
       [{ text: "🟣 نسخة التأسيس 🟣", callback_data: "foundation" }],
       [{ text: "⁉️ محتار وعندك استفسار ⁉️", callback_data: "ask" }],
@@ -132,6 +132,8 @@ const userOrders = {};
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
+
+  console.log(chatId);
 
   bot
     .sendMessage(chatId, versionsInfo.start, mainMenu)
@@ -331,23 +333,7 @@ bot.on("message", (msg) => {
     const version = userOrders[chatId].version;
 
     const numberRegex = /^09\d{8}$/;
-    // if (!numberRegex.test(number)) {
-    //   bot.sendMessage(
-    //     chatId,
-    //     "❌ الرقم غير صحيح. لازم يبدأ بـ 09 ويكون 10 أرقام."
-    //   );
-    //   return;
-    // }
 
-    // if (!locations.includes(location)) {
-    //   bot.sendMessage(
-    //     chatId,
-    //     `❌ الموقع غير صحيح. لازم تختار من: ${locations.join(", ")}`
-    //   );
-    //   return;
-    // }
-
-    // Save data and move to next step
     userOrders[chatId] = {
       version,
       name,
@@ -381,109 +367,4 @@ bot.on("message", (msg) => {
       }
     );
   }
-
-  // if (userOrders[chatId] && userOrders[chatId].step === "awaiting_info") {
-  //   const userInput = msg.text.split("\n");
-  //   if (userInput.length < 3) {
-  //     bot.sendMessage(
-  //       chatId,
-  //       "الرجاء إدخال البيانات بالشكل المطلوب:\nالاسم\nالرقم\nالموقع"
-  //     );
-  //     return;
-  //   }
-
-  //   const name = userInput[0].trim();
-  //   const number = userInput[1].trim();
-  //   const location = userInput[2].trim();
-  //   const version = userOrders[chatId].version;
-
-  //   // Validate number
-  //   const numberRegex = /^09\d{8}$/; // starts with 09 and total 10 digits
-
-  //   console.log(number);
-  //   if (!numberRegex.test(number)) {
-  //     bot.sendMessage(
-  //       chatId,
-  //       "❌ الرقم غير صحيح. لازم يبدأ بـ 09 ويكون 10 أرقام."
-  //     );
-  //     return;
-  //   }
-
-  //   // Validate location
-  //   if (!locations.includes(location)) {
-  //     bot.sendMessage(
-  //       chatId,
-  //       `❌ الموقع غير صحيح. لازم تختار من: ${locations.join(", ")}`
-  //     );
-  //     return;
-  //   }
-
-  //   delete userOrders[chatId];
-
-  //   bot.sendMessage(chatId, "✅ تم تسجيل طلبك، رح نتواصل معك فوراً");
-
-  //   const username = msg.from.username
-  //     ? `@${msg.from.username}`
-  //     : `ID: ${chatId}`;
-  //   bot.sendMessage(
-  //     ORDERS_CHAT_ID,
-  //     `📢 New Order Submitted!\n\nنسخة: ${version}\nالاسم: ${name}\nالرقم: ${number}\nالموقع: ${location}\nالمستخدم: ${username}`
-  //   );
-  // }
 });
-
-//   if (query.data === "front") {
-//   bot.sendPhoto(chatId, "C:/Users/BRO/Desktop/test/f.jpg").then(() => {
-//     bot.sendMessage(chatId, "شرح نسخة الفرونت...\n\n", {
-//       reply_markup: {
-//         inline_keyboard: [
-//           [{ text: "اطلب هالنسخة", callback_data: "order_front" }],
-//           [{ text: "شوف باقي النسخ", callback_data: "menu" }],
-//         ],
-//       },
-//     });
-//   });
-// }
-
-// if (query.data === "front") {
-//   text = "شرح نسخة الفرونت...\n\n";
-//   keyboard = [
-//     [{ text: "اطلب هالنسخة", callback_data: "order_front" }],
-//     [{ text: "شوف باقي النسخ", callback_data: "menu" }],
-//   ];
-// } else if (query.data === "back") {
-//   text = "شرح نسخة الباك...\n\n";
-//   keyboard = [
-//     [{ text: "اطلب هالنسخة", callback_data: "order_back" }],
-//     [{ text: "شوف باقي النسخ", callback_data: "menu" }],
-//   ];
-// } else if (query.data === "foundation") {
-//   text = "شرح نسخة التأسيس...\n\n";
-//   keyboard = [
-//     [{ text: "اطلب هالنسخة", callback_data: "order_foundation" }],
-//     [{ text: "شوف باقي النسخ", callback_data: "menu" }],
-//   ];
-// } else if (query.data === "ask") {
-//   text = "إذا محتار فيك تراسلني هون: @YourUsername";
-//   keyboard = [[{ text: "رجوع للقائمة", callback_data: "menu" }]];
-// } else if (query.data === "menu") {
-//   bot.editMessageText(
-//     "أهلاً بك! هاد البوت الخاص بطلب نسخ شغوف.\nاختر النسخة يلي بتناسبك:",
-//     {
-//       chat_id: chatId,
-//       message_id: query.message.message_id,
-//       reply_markup: mainMenu.reply_markup,
-//     }
-//   );
-//   return;
-// } else if (query.data.startsWith("order_")) {
-//   const version = query.data.replace("order_", "");
-
-//   userOrders[chatId] = { version, step: "awaiting_info" };
-
-//   bot.editMessageText("رجاءً اكتب بياناتك بهالشكل:\n\nالاسم\nالرقم\nالموقع", {
-//     chat_id: chatId,
-//     message_id: query.message.message_id,
-//   });
-//   return;
-// }
