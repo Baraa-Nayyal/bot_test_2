@@ -1,7 +1,13 @@
 import logging
 import requests
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import (
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+    Update,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+)
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -22,12 +28,11 @@ from telegram.ext import (
 # config = load_config()
 
 
-TOKEN = "8366088074:AAG-rZRAQJzLkw6R6nTs8tnFTMNezPAhpL0"
+TOKEN = "8366088074:AAFaFgL0ysdEUqnMgVEeK2uTYPCdiJez8IA"
 ADMIN_CHAT_ID = "895332862"
 ORDERS_CHAT_ID = "-1002993388534"
 ASK_CHAT_ID = "-1003196454615"
-# const ORDERS_CHAT_ID = "-1002993388534";
-# const ASK_CHAT_ID = "-1003196454615";
+
 userAsks = {}
 userOrders = {}
 
@@ -129,25 +134,22 @@ https://t.me/baraa_developer
 """,
     "orderInfo": """شكراً إنك وصلت لهالمرحلة 🎗
 
-🟥 إذا انت بحلب 👇
+هالمرحلة قبل الأخيرة قبل ما تشوف السعر النهائي وتختار إذا بتكمل أو بتلغي الطلب 👇
 
+🟥 إذا كنت بحلب:
 🔸 التوصيل مجاني بمنطقة الأكرمية
+🔹 أو دليفري لباب بيتك بتكلفة بين 8 – 10 آلاف حسب المنطقة
 
-🔹 غير هيك في خيار دليفري لبيتك بأسرع وقت بتكلفة مابتتجاوز 8-10 آلاف على حسب منطقة بيتك
+🟥 إذا كنت بغير محافظة:
+🔸 الشحن عبر القدموس
+ورح أتواصل معك للدفع عن طريق شام كاش، طريقة سهلة حتى لو أول مرة تستخدمها 👀
 
+اكتبلي معلوماتك بهالشكل لنكمل آخر خطوة ومعرفة السعر 💵:
 
-🟥 إذا انت بغير محافظة 👇
-
-🔸 في خيار الشحن بالقدموس ورح اتواصل معك للدفع عن طريق شام كاش، وهو وسيلة كتير سهلة بالتعامل ولو إنك مامتعامل معها من قبل 👀
-
-
-اكتبلي معلوماتك بهالشكل صديقي لنوصل لآخر مرحلة بالطلب:
-
-- الاسم الثلااااااااااثي
+- الاسم الثلاثي
 - المحافظة
 - الرقم
-- المنطقة يلي بتحب تستلم منها مع تفاصيل العنوان للدليفري
-او أقرب منطقة الك للقدموس إذا بغير محافظة
+- المنطقة يلي بتحب تستلم منها (أو أقرب منطقة للقدموس إذا خارج حلب)
 
 مثلاً:
 براء صلاح نيال
@@ -155,12 +157,16 @@ https://t.me/baraa_developer
 09393939393
 أكرمية
 
-أو
+⚪️ أو ⚪️
 
 براء صلاح نيال
 دمشق
 09393939393
-قدموس اشرفية صحنايا
+قدموس أشرفية صحنايا
+
+———————————————————————
+
+ولا تخاف، فيك تلغي الطلب أو تثبّته بالمرحلة الجاي… عليك الأمان 🤝
 
 اكتبلي 👇
 """,
@@ -210,24 +216,61 @@ async def handle_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
         order = userOrders.get(chat_id)
         if not order:
             return
-        await query.edit_message_text("✅ تم تأكيد الطلب، رح أتواصل معك قريباً")
-        username = (
-            f"@{query.from_user.username}"
-            if query.from_user.username
-            else f"ID: {chat_id}"
+
+        userOrders[chat_id]["step"] = "awaiting_contact"
+
+        await query.edit_message_text(
+            " شكراً لتأكيد الطلب! لطفاً شارك رقمك الشخصي عبر زر مشاركة الرقم أدناه لحتى أقدر أتواصل معك وقت التسليم أو الشحن وبوعدك مارح اهكرك ولا فيها خطورة ع حياتك 🤣"
         )
+
+        contact_button = KeyboardButton("📞 شارك رقمي", request_contact=True)
+        reply_markup = ReplyKeyboardMarkup(
+            [[contact_button]], resize_keyboard=True, one_time_keyboard=True
+        )
+
         await context.bot.send_message(
-            ORDERS_CHAT_ID,
-            f"📢 New Order Confirmed!\n\nنسخة: {order['version']}\n"
-            f"المحافظة: {order['governorate']}\n"
-            f"الاسم: {order['name']}\n"
-            f"الرقم: {order['number']}\n"
-            f"الموقع: {order['location']}\n"
-            f"السعر بعد الحسم: {order['price']} ألف\n"
-            f"المستخدم: {username}",
+            chat_id,
+            "اضغط على الزر لمشاركة رقمك الشخصي:",
+            reply_markup=reply_markup,
         )
-        del userOrders[chat_id]
-        return
+
+        # await context.bot.send_message(
+        #     chat_id,
+        #     "اضغط على زر لمشاركة رقمك:",
+        #     reply_markup=InlineKeyboardMarkup(
+        #         [
+        #             [
+        #                 InlineKeyboardButton(
+        #                     "شارك رقمي 📞",
+        #                     request_contact=True,
+        #                     callback_data="share_contact",
+        #                 )
+        #             ]
+        #         ]
+        #     ),
+        # )
+
+        # await query.edit_message_text(
+        #     "📦 رح يتم توصية نسخة للطباعة ورح أتواصل معك بس تجهز. إذا كانت شحن، رح ابعتلك وصل الشحن تلقائياً بس تنشحن. أما إذا التسليم بحلب، فبكون بالتنسيق معي مباشرة. وأي سؤال، شغوف دايماً موجود ✨"
+        # )
+
+        # username = (
+        #     f"@{query.from_user.username}"
+        #     if query.from_user.username
+        #     else f"ID: {chat_id}"
+        # )
+        # await context.bot.send_message(
+        #     ORDERS_CHAT_ID,
+        #     f"📢 New Order Confirmed!\n\nنسخة: {order['version']}\n"
+        #     f"المحافظة: {order['governorate']}\n"
+        #     f"الاسم: {order['name']}\n"
+        #     f"الرقم: {order['number']}\n"
+        #     f"الموقع: {order['location']}\n"
+        #     f"السعر بعد الحسم: {order['price']} ألف\n"
+        #     f"المستخدم: {username}",
+        # )
+        # del userOrders[chat_id]
+        # return
     elif data == "cancel_order":
         await query.edit_message_text(
             "❌ تم إلغاء الطلب. إذا حاب تشاركنا السبب تواصل مع @shagh1"
@@ -263,6 +306,37 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
+    if chat_id in userOrders and userOrders[chat_id]["step"] == "awaiting_contact":
+        if update.message.contact:  # user shared contact
+            contact_number = update.message.contact.phone_number
+            username = (
+                f"@{update.message.from_user.username}"
+                if update.message.from_user.username
+                else f"ID: {chat_id}"
+            )
+            order = userOrders[chat_id]
+
+            await context.bot.send_message(
+                ORDERS_CHAT_ID,
+                f"📢 New Order Confirmed!\n\nنسخة: {order['version']}\n"
+                f"المحافظة: {order['governorate']}\n"
+                f"الاسم: {order['name']}\n"
+                f"الرقم المدخل: {order['number']}\n"
+                f"الموقع: {order['location']}\n"
+                f"السعر بعد الحسم: {order['price']} ألف\n"
+                f"رقم للتواصل: {contact_number} ({username})",
+            )
+
+            await update.message.reply_text(
+                "📦 رح يتم توصية نسخة للطباعة ورح أتواصل معك بس تجهز. إذا كانت شحن، رح ابعتلك وصل الشحن تلقائياً بس تنشحن. أما إذا التسليم بحلب، فبكون بالتنسيق معي مباشرة. وأي سؤال، شغوف دايماً موجود ✨"
+            )
+            del userOrders[chat_id]
+        else:
+            await update.message.reply_text(
+                "❌ الرجاء مشاركة رقمك الشخصي عبر الزر المخصص لذلك."
+            )
+        return
+
     if chat_id in userOrders and userOrders[chat_id]["step"] == "awaiting_info":
         lines = update.message.text.split("\n")
         if len(lines) < 4:
@@ -279,10 +353,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         version = userOrders[chat_id]["version"]
 
-        discount_front_price = 80
+        discount_front_price = 90
         front_main_price = 15
         others_main_price = 10
-        discount_others_price = 65
+        discount_others_price = 70
 
         user_price = (
             discount_front_price if version == "front" else discount_others_price
@@ -305,7 +379,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 الموقع: {location}
 
 السعر الأساسي {"{0}$".format(front_main_price) if version == "front" else "{0}$".format(others_main_price)}
-وبحسم للنسخ الأولى رح يصير السعر: {"{0} ألف".format(discount_front_price) if version == "front" else "{0} ألف".format(others_price)}
+وبحسم هالأسبوع رح يصير السعر: {"{0} ألف".format(discount_front_price) if version == "front" else "{0} ألف".format(discount_others_price)}
 
 ويتضمن ميدلية بورتكليه ذِكرى من شغوف 💫.
 
@@ -328,7 +402,12 @@ def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(handle_query))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    app.add_handler(
+        MessageHandler(
+            filters.TEXT & ~filters.COMMAND | filters.CONTACT, handle_message
+        )
+    )
+
     app.run_polling()
 
 
