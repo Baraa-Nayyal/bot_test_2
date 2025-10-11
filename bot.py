@@ -28,7 +28,7 @@ from telegram.ext import (
 # config = load_config()
 
 
-TOKEN = "8366088074:AAFaFgL0ysdEUqnMgVEeK2uTYPCdiJez8IA"
+TOKEN = "8366088074:AAHjmZ6YL5OdHAh4MA-XmnCAcxOY9ptVlTc"
 ADMIN_CHAT_ID = "895332862"
 ORDERS_CHAT_ID = "-1002993388534"
 ASK_CHAT_ID = "-1003196454615"
@@ -309,6 +309,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if chat_id in userOrders and userOrders[chat_id]["step"] == "awaiting_contact":
         if update.message.contact:  # user shared contact
             contact_number = update.message.contact.phone_number
+            if not contact_number.startswith("+"):
+                contact_number = f"+{contact_number}"
             username = (
                 f"@{update.message.from_user.username}"
                 if update.message.from_user.username
