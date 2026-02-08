@@ -1,6 +1,3 @@
-import logging
-import requests
-
 from telegram import (
     KeyboardButton,
     ReplyKeyboardMarkup,
@@ -18,17 +15,7 @@ from telegram.ext import (
 )
 
 
-# def load_config():
-#     url = "https://raw.githubusercontent.com/Baraa-Nayyal/bot_test_2/main/config.json"
-#     response = requests.get(url)
-#     response.raise_for_status()  # Raises an HTTPError for bad responses
-#     return response.json()
-
-
-# config = load_config()
-
-
-TOKEN = "8366088074:AAHjmZ6YL5OdHAh4MA-XmnCAcxOY9ptVlTc"
+TOKEN = "8366088074:AAGWJTxHIWXo08Pdn9h-HKBZuc5URzNx_Fg"
 ADMIN_CHAT_ID = "895332862"
 ORDERS_CHAT_ID = "-1002993388534"
 ASK_CHAT_ID = "-1003196454615"
@@ -97,34 +84,24 @@ versionsInfo = {
 🔸 وطبعاً To-Do لكل الدروس لترتيب تقدمك بسهولة.
 """,
     "start": """مرحباً بك في شغوف ✨
-شغوف هو صديق رحلتك البرمجية، مابهم المستوى سواء من الصفر او مبلش من قبل، كلشي رح يكون بخطوات واضحة وبسيطة. هدفه يسهّل عليك الطريق ويخلّي التعلم ممتع بعيد عن العشوائية.
-
-🎯 ليش شغوف؟
-التشتت دوماً ياصديقي أكبر عدو للمبتدئين! رح تلاقي كل شيء محتاجه بمكان واحد: مسار تعليمي مرتب، أدوات لإدارة وقتك، وتحفيز يخلّيك تكمل بدون ما توقف إن شاء الله.
-
-بكل فصل رح تلاقي:
-🔸 قسم قبل أن تبدأ وبعد أن تنتهي:
-مقدمة واضحة تعملك تهيئة نفسية تشرحلك ليش هالموضوع كيف رح يفيدك.
-
-🔸 قائمة (To-Do) خاصة بالدروس:
-كل العناوين يلي مرّيت عليها في الفيديوهات بتكون مرتبة، حتى تتابع شو خلصت وشو باقي.
-
-🔸 مساحة حرة لكتابة ملاحظاتك:
-أفكارك، ملاحظاتك، أي فكرة تمر عليك… مكان واحد يجمع كل شي.
-
-🔸 مهامك اليومية الشخصية:
-قسم مخصص لتكتب جدولك اليومي وتحدد أولوياتك بطريقتك.
-
-
-بإمكانك تشوف صور النسخ من القناة:
-https://t.me/baraa_developer
-
-أو تلغرام التواصل في حال مالقيت الخدمة المناسبة بالبوت:
-@shagh1
-
-
-🚀 شغوف بانتظارك ليصنع معك تجربة جديدة، اختر النسخة الخاصة فيك وخلينا نبدأ..
-""",
+    شغوف هو صديق رحلتك البرمجية، مابهم المستوى سواء من الصفر او مبلش من قبل، كلشي رح يكون بخطوات واضحة وبسيطة. هدفه يسهّل عليك الطريق ويخلّي التعلم ممتع بعيد عن العشوائية.
+    🎯 ليش شغوف؟
+    التشتت دوماً ياصديقي أكبر عدو للمبتدئين! رح تلاقي كل شيء محتاجه بمكان واحد: مسار تعليمي مرتب، أدوات لإدارة وقتك، وتحفيز يخلّيك تكمل بدون ما توقف إن شاء الله.
+    بكل فصل رح تلاقي:
+    🔸 قسم قبل أن تبدأ وبعد أن تنتهي:
+    مقدمة واضحة تعملك تهيئة نفسية تشرحلك ليش هالموضوع كيف رح يفيدك.
+    🔸 قائمة (To-Do) خاصة بالدروس:
+    كل العناوين يلي مرّيت عليها في الفيديوهات بتكون مرتبة، حتى تتابع شو خلصت وشو باقي.
+    🔸 مساحة حرة لكتابة ملاحظاتك:
+    أفكارك، ملاحظاتك، أي فكرة تمر عليك… مكان واحد يجمع كل شي.
+    🔸 مهامك اليومية الشخصية:
+    قسم مخصص لتكتب جدولك اليومي وتحدد أولوياتك بطريقتك.
+    بإمكانك تشوف صور النسخ من القناة:
+    https://t.me/baraa_developer
+    أو تلغرام التواصل في حال مالقيت الخدمة المناسبة بالبوت:
+    @shagh1
+    🚀 شغوف بانتظارك ليصنع معك تجربة جديدة، اختر النسخة الخاصة فيك وخلينا نبدأ..
+    """,
     "ask": """محتار بأي مجال تبلش وبدك استشارة لحتى تتطمن إنك قررت صح ؟
 فيك تترك سؤالك برسالة على المعرف @shagh1 ✉️
 ورح اتواصل معك وأجاوب بأسرع وقت إن شاء الله..
@@ -137,8 +114,7 @@ https://t.me/baraa_developer
 هالمرحلة قبل الأخيرة قبل ما تشوف السعر النهائي وتختار إذا بتكمل أو بتلغي الطلب 👇
 
 🟥 إذا كنت بحلب:
-🔸 التوصيل مجاني بمنطقة الأكرمية
-🔹 أو دليفري لباب بيتك بتكلفة بين 8 – 10 آلاف حسب المنطقة
+🔸 الإستلام رح يكون بمكتبة دعبول بأدونيس بعد ماتسجل اسمك بالطلب
 
 🟥 إذا كنت بغير محافظة:
 🔸 الشحن عبر القدموس
@@ -149,13 +125,13 @@ https://t.me/baraa_developer
 - الاسم الثلاثي
 - المحافظة
 - الرقم
-- المنطقة يلي بتحب تستلم منها (أو أقرب منطقة للقدموس إذا خارج حلب)
+- اذا بحلب اكتبلي أدونيس (أو أقرب منطقة للقدموس إذا خارج حلب)
 
 مثلاً:
 براء صلاح نيال
 حلب
 09393939393
-أكرمية
+أدونيس
 
 ⚪️ أو ⚪️
 
@@ -234,43 +210,6 @@ async def handle_query(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
         )
 
-        # await context.bot.send_message(
-        #     chat_id,
-        #     "اضغط على زر لمشاركة رقمك:",
-        #     reply_markup=InlineKeyboardMarkup(
-        #         [
-        #             [
-        #                 InlineKeyboardButton(
-        #                     "شارك رقمي 📞",
-        #                     request_contact=True,
-        #                     callback_data="share_contact",
-        #                 )
-        #             ]
-        #         ]
-        #     ),
-        # )
-
-        # await query.edit_message_text(
-        #     "📦 رح يتم توصية نسخة للطباعة ورح أتواصل معك بس تجهز. إذا كانت شحن، رح ابعتلك وصل الشحن تلقائياً بس تنشحن. أما إذا التسليم بحلب، فبكون بالتنسيق معي مباشرة. وأي سؤال، شغوف دايماً موجود ✨"
-        # )
-
-        # username = (
-        #     f"@{query.from_user.username}"
-        #     if query.from_user.username
-        #     else f"ID: {chat_id}"
-        # )
-        # await context.bot.send_message(
-        #     ORDERS_CHAT_ID,
-        #     f"📢 New Order Confirmed!\n\nنسخة: {order['version']}\n"
-        #     f"المحافظة: {order['governorate']}\n"
-        #     f"الاسم: {order['name']}\n"
-        #     f"الرقم: {order['number']}\n"
-        #     f"الموقع: {order['location']}\n"
-        #     f"السعر بعد الحسم: {order['price']} ألف\n"
-        #     f"المستخدم: {username}",
-        # )
-        # del userOrders[chat_id]
-        # return
     elif data == "cancel_order":
         await query.edit_message_text(
             "❌ تم إلغاء الطلب. إذا حاب تشاركنا السبب تواصل مع @shagh1"
@@ -311,6 +250,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             contact_number = update.message.contact.phone_number
             if not contact_number.startswith("+"):
                 contact_number = f"+{contact_number}"
+
             username = (
                 f"@{update.message.from_user.username}"
                 if update.message.from_user.username
@@ -355,7 +295,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         version = userOrders[chat_id]["version"]
 
-        discount_front_price = 90
+        discount_front_price = 85
         front_main_price = 15
         others_main_price = 10
         discount_others_price = 70
